@@ -45,7 +45,7 @@ for record in f:
             print "YUP"
         else:
             missing.append(url)
-    except e:
+    except:
         busted.append(url)
         continue
 
@@ -53,3 +53,4 @@ print found, total
 print missing
 print busted
     
+sys.exit(total - found)
