@@ -20,6 +20,7 @@ def content_type(record):
 
 filter_index = 0
 def filter_rec(record):
+    return True
     global filter_index
     filter_index += 1
     return ((filter_index % 4) == 0)
@@ -36,8 +37,8 @@ for record in f:
     if not filter_rec(record):
         # statistical sampling i guess, to save time
         continue
-    (url, ts,) = get_info(record)
     total += 1
+    (url, ts,) = get_info(record)
     print url
     try:
         if is_in_wb(url, ts):
@@ -50,7 +51,15 @@ for record in f:
         continue
 
 print found, total
-print missing
-print busted
-    
+print "missing:", missing
+print "busted:", busted
+
+if (total == found):
+    print "ALL THERE"
+
+# tolerate a 20% failure rate
+if len(missing) == 0:
+    if len(busted) < 0.2*total:
+        sys.exit(0)
+
 sys.exit(total - found)
